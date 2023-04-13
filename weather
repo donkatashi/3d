@@ -1,0 +1,34 @@
+from flask import Flask, render_template, request
+import requests
+
+app = Flask(__name__)
+
+# Weather API endpoint and API key
+API_ENDPOINT = 'https://api.openweathermap.org/data/2.5/weather'
+API_KEY = 'YOUR_API_KEY'  # Replace with your own OpenWeatherMap API key
+
+# Home route
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+# Weather route
+@app.route('/weather', methods=['POST'])
+def weather():
+    city = request.form['city']
+    response = requests.get(f'{API_ENDPOINT}?q={city}&appid={API_KEY}')
+    data = response.json()
+    if response.status_code == 200:
+        weather_info = {
+            'city': data['name'],
+            'temperature': data['main']['temp'],
+            'description': data['weather'][0]['description'],
+            'icon': data['weather'][0]['icon']
+        }
+        return render_template('weather.html', weather=weather_info)
+    else:
+        error_message = data['message']
+        return render_template('error.html', error_message=error_message)
+
+if __name__ == '__main__':
+    app.run(debug=True)
