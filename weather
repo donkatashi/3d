@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-# Weather API endpoint and API key
+# Weather API endpoint and API key 21
 API_ENDPOINT = 'https://api.openweathermap.org/data/2.5/weather'
 API_KEY = 'YOUR_API_KEY'  # Replace with your own OpenWeatherMap API key
 
